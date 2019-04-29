@@ -1,0 +1,32 @@
+**Ïà»ú²ÎÊý
+H:=217.0
+dis:=490.0
+h:=0
+
+v:=748.0
+u:=648.0
+vcenter:=707.606 
+ucenter:=604.677 
+f:=1.25649
+xpix:=0.0008314 
+ypix:=0.00083 
+Alpha:=atan(H/dis)
+
+ y:=(v-vcenter)*ypix 
+    Gama:=atan(y/f) 
+    Beta:=Alpha+Gama 
+    Y:=H/tan(Beta) 
+    *Scale for depth
+    Yreal:=Y*(1-h/H)
+    ***********X calculation
+    OP:=H/sin(Beta) 
+    tuple_sqrt(f*f+y*y,Op) 
+    x:=(u-ucenter)*xpix 
+    X:=x*OP/Op 
+    *%Scale for depth
+    Xreal:=X*(1-h/H) 
+
+
+x ˜ 1.00286583820472
+
+x˜1.0028658382047198, y˜0.010852799221328105

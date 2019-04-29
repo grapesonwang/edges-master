@@ -1,0 +1,9 @@
+clear all
+
+load('.\Data\lines.mat');
+
+for i = 1:1:9
+    p(i) = polyfit(lines.point1(i), lines.point)
+end
+
+
