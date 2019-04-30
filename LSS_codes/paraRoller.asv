@@ -1,0 +1,14 @@
+function [Y_Coordinates, Roller_Dist] = paraRoller(lines)
+
+    X_Coordinate = 512;   % This is usually the center of the X coordinate
+    
+    for i = 1:1:size(lines, 2)
+        coeff = polyfit( [lines(i).point1(1), lines(i).point2(1)], [lines(i).point1(2), lines(i).point2(2)], 1);
+        Y_Coordinates(i) = polyval(coeff, X_Coordinate);
+    end
+
+%     coor = sort(coor, 'descend');
+    for i = 1:1:floor(size(lines,2) / 2)
+        Roller_Dist(i) = Y_Coordinates(2*i -1) - Y_Coordinates(2*i);
+    end
+end
