@@ -1,6 +1,6 @@
-close all
-clear all
-clc
+% close all
+% clear all
+% clc
 
 %% Find how many pics to be processed in the directory
 edgpath =  '..\image\Edge_Hough\Rec_000129'
@@ -29,6 +29,8 @@ Col = [555 622 615 152 357];
 Row = [218 504 757 754 218];
 end
 
+Tolerance  = 5; % Tolerant pixels
+
 %% Parameters
 % strDate = datestr(now, 30);  %(ISO 8601)'yyyymmdd THHMMSS' 20000301T154517
 startFrame = 1; 
@@ -39,7 +41,7 @@ Width = 1024;
 Height = 768;
 
 %% Video
-videoname  = ['..\Local_videos\framesEdge_Rec_000129-5'];
+videoname  = ['..\Local_videos\framesEdge_Rec_000129-6'];
 writerObj = VideoWriter(videoname);
 Total_time  = 100; % total time of video in seconds
 framerate = 2;
@@ -123,9 +125,16 @@ for i = startFrame:endFrame
     lines=houghlines(edgeBW,T,R,P); % Extracting line segments
     
     %% To determine the distance between rollers
+    [temp_num, temp_coor, temp_diff] = paraRoller(lines);
+%     allPara(i).num = temp_num;
+%     allPara(i).coor = temp_coor;
+%     allPara(i).diff = temp_diff;
     
+    allPara(i).num = 6;
+    allPara(i).coor = temp_coor(1:6);
+    allPara(i).diff = temp_diff(1:3);
     
-%% Show lines in the figure
+    %% Show lines in the figure
     for k = 1:length(lines)
             xy = [lines(k).point1; lines(k).point2];
             plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green'); % Draw line segments
@@ -137,3 +146,10 @@ for i = startFrame:endFrame
     writeVideo(writerObj,F);
 end
  close(writerObj);   
+ 
+ %% Compute the corresponded physical distances
+standardData = load('.\Data\standardData.mat');   %standard_coor  Y coordinate of each line at X=512; standard_diff  Difference between adjacent rollers; standard_lines Start and End points of the corresponding lines
+% standardData.standard_coor = round(standardData.standard_coor(1:6));
+% standardData.standard_diff = round(standardData.standard_diff(1:3));
+
+evalDist = distRoller(allPara, standardData, Tolerance);
